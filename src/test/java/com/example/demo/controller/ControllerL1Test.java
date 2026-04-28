@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.CategoryL1;
+import jdk.jfr.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,40 +17,49 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+// STEP 1: Autowire fields and add correct class annotation
+// STEP 2: setUp method to populate list
+// STEP 3: Create a test to cover getCategories endpoint
 @WebMvcTest
 public class ControllerL1Test {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private CategoryControllerL1 controller;
+    private CategoryControllerL1 categoryControllerL1;
 
     private List<CategoryL1> testCategories;
 
-
-//    @Test
-//    void getCategories_returnsEmptyList_whenNoCatAdded() throws Exception{
-//        mockMvc.perform(get("/api/public/l1/getCategories"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json("[]"));
-//    }
-
     @BeforeEach
-    void setup() {
+    void setUp(){
         testCategories = new ArrayList<>();
 
-        testCategories.add(new CategoryL1(1L, "Sport", "Test"));
-        testCategories.add(new CategoryL1(2L, "Travel", "Test"));
-
-        ReflectionTestUtils.setField(controller, "categories", testCategories);
+        testCategories.add(new CategoryL1(1L, "Travel", "Test"));
+        testCategories.add(new CategoryL1(2L, "Sport", "Test"));
+        ReflectionTestUtils.setField(categoryControllerL1, "categories", testCategories);
     }
 
     @Test
-    void getCategories_returnsList_whenCategoriesExist() throws Exception {
+    void getCategories_returnsList_whenCatPresent() throws Exception{
         mockMvc.perform(get("/api/public/l1/getCategories"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].categoryName").value("Sport"))
-                .andExpect(jsonPath("$[1].categoryName").value("Travel"));
+                .andExpect(jsonPath("$[0].categoryName").value("Travel"))
+                .andExpect(jsonPath("$[1].categoryName").value("Sport"));
+    }
+
+    @Test
+    void getCategory_returnsCategory_whenIdExists() throws Exception {
+        mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryId").value(1))
+                .andExpect(jsonPath("$.categoryName").value("Travel"));
+    }
+
+    @Test
+    void getCategory_returnsEmptyBody_whenIdDoesNotExist() throws Exception {
+        mockMvc.perform(get("/api/public/l1/getCategory/{id}", 99L))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
     }
 }
