@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.CategoryL1;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jdk.jfr.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // STEP 1: Autowire fields and add correct class annotation
 // STEP 2: setUp method to populate list
 // STEP 3: Create a test to cover getCategories endpoint
+
 @WebMvcTest
 public class ControllerL1Test {
     @Autowired
@@ -29,6 +32,9 @@ public class ControllerL1Test {
     private CategoryControllerL1 categoryControllerL1;
 
     private List<CategoryL1> testCategories;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp(){
@@ -49,7 +55,7 @@ public class ControllerL1Test {
     }
 
     @Test
-    void getCategory_returnsCategory_whenIdExists() throws Exception {
+    void getCategory_returnsCat_whenIdPresent() throws Exception {
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categoryId").value(1))
@@ -57,9 +63,29 @@ public class ControllerL1Test {
     }
 
     @Test
-    void getCategory_returnsEmptyBody_whenIdDoesNotExist() throws Exception {
+    void getCategory_returnsEmptyString_whenIdNotPresent() throws Exception{
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 99L))
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
+    }
+
+    @Test
+    void addCategory_addsCategory_whenValidCategoryProvided() throws Exception {
+        CategoryL1 newCategory = new CategoryL1(3L, "Food", "Test");
+
+        mockMvc.perform(post("/api/public/l1/addCategory")
+                        .contentType("application/json")
+                        .content(toJson(newCategory)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Category added:")));
+
+        mockMvc.perform(get("/api/public/l1/getCategories"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3))
+                .andExpect(jsonPath("$[2].categoryName").value("Food"));
+    }
+
+    private String toJson(CategoryL1 category) throws Exception {
+        return objectMapper.writeValueAsString(category);
     }
 }
