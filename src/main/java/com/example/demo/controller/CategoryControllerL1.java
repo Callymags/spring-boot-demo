@@ -13,6 +13,7 @@ import java.util.List;
 // STEP 5: Create a DELETE endpoint to remove a category from the list. Print object to terminal before deletion.
 // STEP 6: Create an Update endpoint to update entire existing category
 // STEP 7: Create a PATCH endpoint to partially update existing category
+// STEP 8: Create a DELETE endpoint to delete existing category
 
 @RestController
 public class CategoryControllerL1 {
@@ -68,14 +69,15 @@ public class CategoryControllerL1 {
        return null;
    }
 
-    @DeleteMapping("/api/public/l1/deleteCategory/{id}")
-    public String deleteCategory(@PathVariable Long id) {
+   @DeleteMapping("/api/public/l1/deleteCategory/{id}")
+   public String deleteCategory(@PathVariable Long id) {
+     boolean removeCategory = categories.removeIf(category -> category.getCategoryId().equals(id));
 
-        boolean removed = categories.removeIf(category -> category.getCategoryId().equals(id));
-        if (removed) {
-            return "Category removed";
-        }
+     if(removeCategory){
+         return "Category removed";
+     } else {
+         return "Category not found";
+     }
+   }
 
-        return "Category not found";
-    }
 }

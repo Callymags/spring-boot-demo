@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.CategoryL1;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // STEP 4: Create tests to cover getCategory endpoint - valid and invalid id
 // STEP 5: Create a test to cover addCategory endpoint
 // STEP 6: Create a test to cover updateCategory endpoint
+// STEP 7: Create a test to cover patchCategory endpoint
+// STEP 6: Create a test to cover deleteCategory endpoint
 
 @WebMvcTest
 public class ControllerL1Test {
@@ -141,18 +142,18 @@ public class ControllerL1Test {
     }
 
     @Test
-    void deleteCategory_returnsRemoved_whenValidIdProvided() throws Exception {
+    void deleteCategory_returnsString_whenValidIdProvided() throws Exception {
         mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Category removed")));
+                .andExpect(status().isOk()).andExpect(content().string(containsString("Category removed")));
     }
 
     @Test
-    void deleteCategory_returnsNotFound_whenInvalidIdProvided() throws Exception {
+    void deleteCategory_returnsString_whenInvalidIdProvided() throws Exception {
         mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 99L))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Category not found")));
+                .andExpect(status().isOk()).andExpect(content().string(containsString("Category not found")));
     }
+
+
 
     private String toJson(CategoryL1 category) throws Exception {
         return objectMapper.writeValueAsString(category);
