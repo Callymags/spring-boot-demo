@@ -16,56 +16,66 @@ import java.util.List;
 
 @RestController
 public class CategoryControllerL1 {
-    private List<CategoryL1> categories = new ArrayList<>();
+   private List<CategoryL1> categories = new ArrayList<>();
 
-    @GetMapping("/api/public/l1/getCategories")
+   @GetMapping("/api/public/l1/getCategories")
     public List<CategoryL1> getCategories(){
-        return categories;
-    }
+       return categories;
+   }
 
-    @GetMapping("/api/public/l1/getCategory/{id}")
+   @GetMapping("/api/public/l1/getCategory/{id}")
     public CategoryL1 getCategory(@PathVariable Long id){
-        for (CategoryL1 category : categories){
-            if(category.getCategoryId().equals(id)){
-                return category;
-            }
-        }
-        return null;
-    }
+       for(CategoryL1 category: categories){
+           if(category.getCategoryId().equals(id)){
+               return category;
+           }
+       }
+       return null;
+   }
 
-    @PostMapping("/api/public/l1/addCategory")
+   @PostMapping("/api/public/l1/addCategory")
     public String addCategory(@RequestBody CategoryL1 category){
-        categories.add(category);
+       categories.add(category);
+       return "Category added: " + category;
+   }
 
-        return "Category added: " + category;
-    }
+   @PutMapping("/api/public/l1/updateCategory/{id}")
+   public String updateCategory(@RequestBody CategoryL1 updatedCat, @PathVariable Long id){
+       for(CategoryL1 category:categories){
+           if(category.getCategoryId().equals(id)){
+               category.setCategoryName(updatedCat.getCategoryName());
+               category.setCategoryDesc(updatedCat.getCategoryDesc());
+               return "Category updated: " + category;
+           }
+       }
+       return null;
+   }
 
-    @PutMapping("/api/public/l1/updateCategory/{id}")
-    public String updateCategory(@RequestBody CategoryL1 categoryUpdates, @PathVariable Long id){
-        for(CategoryL1 category: categories){
-            if(category.getCategoryId().equals(id)){
-                category.setCategoryName(categoryUpdates.getCategoryName());
-                category.setCategoryDesc(categoryUpdates.getCategoryDesc());
-                return "Updated Category: " + category;
-            }
-        }
-        return null;
-    }
+   @PatchMapping("/api/public/l1/patchCategory/{id}")
+   public String patchCategory(@RequestBody CategoryL1 patchedCat, @PathVariable Long id){
+       for (CategoryL1 category:categories){
+           if(category.getCategoryId().equals(id)){
+               if (patchedCat.getCategoryName() != null){
+                   category.setCategoryName(patchedCat.getCategoryName());
+               }
 
-    @PatchMapping("/api/public/l1/patchCategory/{id}")
-    public String patchCategory(@RequestBody CategoryL1 categoryPatches, @PathVariable Long id){
-        for(CategoryL1 category: categories){
-            if(category.getCategoryId().equals(id)){
-                category.setCategoryName(categoryPatches.getCategoryName());
-                return "Updated Category: " + category;
-            }
-        }
-        return null;
-    }
+               if(patchedCat.getCategoryDesc() != null){
+                   category.setCategoryDesc(patchedCat.getCategoryDesc());
+               }
+               return "Patched category: " + category;
+           }
+       }
+       return null;
+   }
 
     @DeleteMapping("/api/public/l1/deleteCategory/{id}")
-    public String deleteCategory(@PathVariable Long id){
-        categories.removeIf(category -> category.getCategoryId().equals(id));
-        return "Category removed";
+    public String deleteCategory(@PathVariable Long id) {
+
+        boolean removed = categories.removeIf(category -> category.getCategoryId().equals(id));
+        if (removed) {
+            return "Category removed";
+        }
+
+        return "Category not found";
     }
 }

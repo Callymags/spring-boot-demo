@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.CategoryL1;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest
 public class ControllerL1Test {
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Autowired
-    private CategoryControllerL1 categoryControllerL1;
+    CategoryControllerL1 categoryControllerL1;
 
     private List<CategoryL1> testCategories;
-
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -48,7 +48,7 @@ public class ControllerL1Test {
     }
 
     @Test
-    void getCategories_returnsList_whenCatPresent() throws Exception{
+    void getCategories_returnsCat_whenListPopulated() throws Exception {
         mockMvc.perform(get("/api/public/l1/getCategories"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -57,57 +57,101 @@ public class ControllerL1Test {
     }
 
     @Test
-    void getCategory_returnsCat_whenIdPresent() throws Exception {
-        mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L))
+    void getCategory_returnsCat_whenValidIdPresent() throws Exception {
+        mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryId").value(1L))
                 .andExpect(jsonPath("$.categoryName").value("Travel"));
     }
 
     @Test
-    void getCategory_returnsEmptyString_whenNoIdPresent() throws Exception {
+    void getCategory_returnsNull_whenInvalidIdPresent() throws Exception {
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 99L))
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
     }
 
+
     @Test
-    void addCategory_returnsString_whenValidCatPresented () throws Exception {
+    void addCategory_returnsString_whenValidCatAdded() throws Exception {
         CategoryL1 category = new CategoryL1(3L, "Food", "Test");
 
-        mockMvc.perform(post("/api/public/l1/addCategory").contentType("application/json").content(toJson(category)))
-                .andExpect(status().isOk()).andExpect(content().string(containsString("Category added")));
+        mockMvc.perform(post("/api/public/l1/addCategory").contentType("application/json")
+                .content(toJson(category))).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category added")));
 
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 3L))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.categoryName").value("Food"));
-
     }
 
-
     @Test
-    void updateCategory_returnsStringAndUpdatesCategory_whenIdPresent() throws Exception {
-        CategoryL1 categoryUpdates = new CategoryL1(1L, "Updated Travel", "Updated Test");
+    void updateCategory_returnsString_whenValidCatProvided() throws Exception {
+        CategoryL1 updatedCat = new CategoryL1(1L, "Activity", "Test Update");
 
-        mockMvc.perform(put("/api/public/l1/updateCategory/{id}", 1L)
-                        .contentType("application/json")
-                        .content(toJson(categoryUpdates)))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Updated Category")));
+        mockMvc.perform(put("/api/public/l1/updateCategory/{id}", 1L).contentType("application/json")
+                .content(toJson(updatedCat))).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category updated:")));
 
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.categoryName").value("Updated Travel"))
-                .andExpect(jsonPath("$.categoryDesc").value("Updated Test"));
+                .andExpect(jsonPath("$.categoryName").value("Activity"));
     }
 
     @Test
-    void updateCategory_returnsEmptyString_whenIdNotPresent() throws Exception {
-        CategoryL1 categoryUpdates = new CategoryL1(99L, "Updated Name", "Updated Desc");
+    void updateCategory_returnsEmptyString_whenInvalidCatProvided() throws Exception {
+        CategoryL1 updatedCat = new CategoryL1(5L, "Activity", "Test");
 
-        mockMvc.perform(put("/api/public/l1/updateCategory/{id}", 99L)
-                        .contentType("application/json")
-                        .content(toJson(categoryUpdates)))
+        mockMvc.perform(put("/api/public/l1/updateCategory/{id}", 5L)
+                .contentType("application/json").content(toJson(updatedCat)))
+                .andExpect(status().isOk()).andExpect(content().string(containsString("")));
+    }
+
+    @Test
+    void patchCategory_returnsString_whenValidIdAndCatNameProvided() throws Exception {
+        CategoryL1 patchedCat = new CategoryL1(1L, "Activity", null);
+
+        mockMvc.perform(patch("/api/public/l1/patchCategory/{id}", 1L)
+                .contentType("application/json").content(toJson(patchedCat)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""));
+                .andExpect(content().string(containsString("Patched category")));
+
+        mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryName").value("Activity"));
+    }
+
+    @Test
+    void patchCategory_returnsString_whenValidCatDescAndIdProvided() throws Exception {
+        CategoryL1 patchedCat = new CategoryL1(1L, null, "Dummy Desc");
+
+        mockMvc.perform(patch("/api/public/l1/patchCategory/{id}", 1L).contentType("application/json").content(toJson(patchedCat))
+                ).andExpect(status().isOk()).andExpect(content().string(containsString("Patched category")));
+
+        mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryDesc").value("Dummy Desc"));
+    }
+
+    @Test
+    void patchCategory_returnsNull_whenInvalidIdProvided() throws Exception {
+        CategoryL1 patchedCat = new CategoryL1(99L, "Patched Cat", "Patched Desc");
+
+        mockMvc.perform(patch("/api/public/l1/patchCategory/{id}", 99L)
+                .contentType("application/json").content(toJson(patchedCat)))
+                .andExpect(status().isOk()).andExpect(content().string(""));
+    }
+
+    @Test
+    void deleteCategory_returnsRemoved_whenValidIdProvided() throws Exception {
+        mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category removed")));
+    }
+
+    @Test
+    void deleteCategory_returnsNotFound_whenInvalidIdProvided() throws Exception {
+        mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 99L))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category not found")));
     }
 
     private String toJson(CategoryL1 category) throws Exception {

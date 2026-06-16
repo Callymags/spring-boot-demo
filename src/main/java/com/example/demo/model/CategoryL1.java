@@ -13,7 +13,8 @@ public class CategoryL1 {
     private String categoryName;
     private String categoryDesc;
 
-    public CategoryL1(){}
+    public CategoryL1(){
+    }
 
     public CategoryL1(Long categoryId, String categoryName, String categoryDesc){
         this.categoryId = categoryId;
@@ -47,6 +48,7 @@ public class CategoryL1 {
 
     @Override
     public String toString(){
-        return "CategoryL1{categoryId=" + categoryId + ", categoryName='" + categoryName + '\'' + ", categoryDesc='" + categoryDesc + '\'' + '}';
+        return "CategoryL1{" + "categoryId=" + categoryId + ", categoryName='" + categoryName +
+            '\'' + ", categoryDesc='" + categoryDesc + '\'' + '}';
     }
 }
