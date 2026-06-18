@@ -144,13 +144,30 @@ public class ControllerL1Test {
     @Test
     void deleteCategory_returnsString_whenValidIdProvided() throws Exception {
         mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 1L))
-                .andExpect(status().isOk()).andExpect(content().string(containsString("Category removed")));
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category removed")));
     }
 
     @Test
     void deleteCategory_returnsString_whenInvalidIdProvided() throws Exception {
         mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 99L))
-                .andExpect(status().isOk()).andExpect(content().string(containsString("Category not found")));
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category not found")));
+    }
+
+    @Test
+    void searchCategory_returnsList_whenNameExists() throws Exception {
+        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Sport"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].categoryName").value("Sport"));
+    }
+
+    @Test
+    void searchCategory_returnsEmptyList_whenNameDoesNotExist() throws Exception {
+        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Music"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 
 

@@ -6,14 +6,43 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// STEP 1: Create an in-memory list to act as fake data for get request
-// STEP 2: Create a get endpoint to get all categories.
-// STEP 3: Create a get endpoint to get a specific category.
+// STEP 1: Create an in-memory list to act as fake data for requests
+
+// STEP 2: Create a GET endpoint to get all categories.
+// Uses: basic List return
+
+// STEP 3: Create a GET endpoint to get a specific category by id.
+// Uses: for loop practice
+
 // STEP 4: Create a POST endpoint to add a category to the list.
-// STEP 5: Create a DELETE endpoint to remove a category from the list. Print object to terminal before deletion.
-// STEP 6: Create an Update endpoint to update entire existing category
-// STEP 7: Create a PATCH endpoint to partially update existing category
-// STEP 8: Create a DELETE endpoint to delete existing category
+// Uses: @RequestBody
+
+// STEP 5: Create a PUT endpoint to update an entire existing category.
+// Uses: for loop practice
+
+// STEP 6: Create a PATCH endpoint to partially update an existing category.
+// Uses: null checks and conditional updates
+
+// STEP 7: Create a DELETE endpoint to remove a category by id.
+// Uses: removeIf lambda
+
+// STEP 8: Create a GET endpoint to search categories by exact name.
+// Uses: stream(), filter(), toList()
+
+// STEP 9: Create a GET endpoint to return only category names.
+// Uses: stream(), map(), toList()
+
+// STEP 10: Create a GET endpoint to count categories by name.
+// Uses: stream(), filter(), count()
+
+// STEP 11: Refactor one existing endpoint to use stream(), findFirst(), orElse(null).
+// Suggestion: use this on getCategory later, after practising the for loop version.
+
+// STEP 12: Create a GET endpoint to check whether a category exists by id.
+// Uses: stream(), anyMatch()
+
+// STEP 13: Create a GET endpoint to return categories sorted by name.
+// Uses: stream(), sorted(), Comparator
 
 @RestController
 public class CategoryControllerL1 {
@@ -70,14 +99,21 @@ public class CategoryControllerL1 {
    }
 
    @DeleteMapping("/api/public/l1/deleteCategory/{id}")
-   public String deleteCategory(@PathVariable Long id) {
-     boolean removeCategory = categories.removeIf(category -> category.getCategoryId().equals(id));
+   public String deleteCategory(@PathVariable Long id){
+      boolean catRemoved = categories.removeIf(category -> category.getCategoryId().equals(id));
 
-     if(removeCategory){
-         return "Category removed";
-     } else {
-         return "Category not found";
-     }
+      if(catRemoved){
+          return "Category removed";
+      } else {
+          return "Category not found";
+      }
    }
+
+    @GetMapping("/api/public/l1/searchCategory/{name}")
+    public List<CategoryL1> searchCategory(@PathVariable String name) {
+        return categories.stream()
+                .filter(category -> category.getCategoryName().equals(name))
+                .toList();
+    }
 
 }

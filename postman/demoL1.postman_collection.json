@@ -10,7 +10,21 @@
       "name": "getCategories",
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/public/l1/getCategories",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "public",
+            "l1",
+            "getCategories"
+          ]
+        }
       },
       "response": []
     },
@@ -32,6 +46,29 @@
             "l1",
             "getCategory",
             "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "searchCategory",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/public/l1/searchCategory/Sport",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "public",
+            "l1",
+            "searchCategory",
+            "Sport"
           ]
         }
       },
@@ -67,7 +104,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"categoryId\": 2,\r\n    \"categoryName\": \"Sport\",\r\n    \"categoryDesc\": \"Test\"\r\n}",
+          "raw": "{\r\n    \"categoryId\": 3,\r\n    \"categoryName\": \"Sport\",\r\n    \"categoryDesc\": \"Test\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
