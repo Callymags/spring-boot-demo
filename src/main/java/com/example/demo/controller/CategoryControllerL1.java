@@ -109,10 +109,16 @@ public class CategoryControllerL1 {
       }
    }
 
-    @GetMapping("/api/public/l1/searchCategory/{name}")
-    public List<CategoryL1> searchCategory(@PathVariable String name) {
+   @GetMapping("/api/public/l1/searchCategory/{name}")
+   public List<CategoryL1> searchCategory(@PathVariable String name){
+       return categories.stream().filter(
+               category -> category.getCategoryName().equals(name)).toList();
+   }
+
+    @GetMapping("/api/public/l1/categoryNames")
+    public List<String> getCategoryNames() {
         return categories.stream()
-                .filter(category -> category.getCategoryName().equals(name))
+                .map(category -> category.getCategoryName())
                 .toList();
     }
 

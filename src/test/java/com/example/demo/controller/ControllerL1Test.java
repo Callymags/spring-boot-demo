@@ -156,21 +156,28 @@ public class ControllerL1Test {
     }
 
     @Test
-    void searchCategory_returnsList_whenNameExists() throws Exception {
-        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Sport"))
+    void searchCategory_returnsList_whenValidNameProvided() throws Exception {
+        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Travel"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].categoryName").value("Sport"));
+                .andExpect(jsonPath("$[0].categoryName").value("Travel"));
     }
 
     @Test
-    void searchCategory_returnsEmptyList_whenNameDoesNotExist() throws Exception {
-        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Music"))
+    void searchCategory_returnsBlank_whenInvalidNameProvided() throws Exception {
+        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Test"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }
 
-
+    @Test
+    void getCategoryNames_returnsListOfNames_whenCategoriesExist() throws Exception {
+        mockMvc.perform(get("/api/public/l1/categoryNames"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0]").value("Travel"))
+                .andExpect(jsonPath("$[1]").value("Sport"));
+    }
 
     private String toJson(CategoryL1 category) throws Exception {
         return objectMapper.writeValueAsString(category);
