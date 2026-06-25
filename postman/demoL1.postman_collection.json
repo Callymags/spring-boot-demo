@@ -29,6 +29,51 @@
       "response": []
     },
     {
+      "name": "getCategoryNames",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/public/l1/getCategoryNames",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "public",
+            "l1",
+            "getCategoryNames"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "countCategory",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/public/l1/countCategory/Sport",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "public",
+            "l1",
+            "countCategory",
+            "Sport"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "getCategory",
       "request": {
         "method": "GET",

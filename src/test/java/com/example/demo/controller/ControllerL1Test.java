@@ -171,12 +171,25 @@ public class ControllerL1Test {
     }
 
     @Test
-    void getCategoryNames_returnsListOfNames_whenCategoriesExist() throws Exception {
-        mockMvc.perform(get("/api/public/l1/categoryNames"))
+    void getCategoryNames_returnsCategoryNames_whenCategoriesPresent() throws Exception {
+        mockMvc.perform(get("/api/public/l1/getCategoryNames"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0]").value("Travel"))
-                .andExpect(jsonPath("$[1]").value("Sport"));
+                .andExpect(jsonPath("$[0]").value("Travel"));
+    }
+
+    @Test
+    void countCategoriesByName_returnsCount_whenNameExists() throws Exception {
+        mockMvc.perform(get("/api/public/l1/countCategory/{name}", "Sport"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
+    }
+
+    @Test
+    void countCategoriesByName_returnsZero_whenNameDoesNotExist() throws Exception {
+        mockMvc.perform(get("/api/public/l1/countCategory/{name}", "Music"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("0"));
     }
 
     private String toJson(CategoryL1 category) throws Exception {

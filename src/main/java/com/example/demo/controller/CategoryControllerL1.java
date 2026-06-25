@@ -115,11 +115,16 @@ public class CategoryControllerL1 {
                category -> category.getCategoryName().equals(name)).toList();
    }
 
-    @GetMapping("/api/public/l1/categoryNames")
+    @GetMapping("/api/public/l1/getCategoryNames")
     public List<String> getCategoryNames() {
+       return categories.stream().map(category -> category.getCategoryName()).toList();
+    }
+
+    @GetMapping("/api/public/l1/countCategory/{name}")
+    public long countCategoriesByName(@PathVariable String name) {
         return categories.stream()
-                .map(category -> category.getCategoryName())
-                .toList();
+                .filter(category -> category.getCategoryName().equals(name))
+                .count();
     }
 
 }
