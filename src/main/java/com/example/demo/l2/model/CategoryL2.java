@@ -1,22 +1,22 @@
-package com.example.demo.model;
+package com.example.demo.l2.model;
 
 
-// WARM UP:
+// REVISION:
 // 1. Create a simple model (POJO)
 // 2. Add id, category name, and description fields
 // 3. Add constructor
 // 4. Add getters and setters
 // 5. Add toString()
 
-public class CategoryL1 {
+public class CategoryL2 {
     private Long categoryId;
     private String categoryName;
     private String categoryDesc;
 
-    public CategoryL1(){
+    public CategoryL2(){
     }
 
-    public CategoryL1(Long categoryId, String categoryName, String categoryDesc){
+    public CategoryL2(Long categoryId, String categoryName, String categoryDesc){
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.categoryDesc = categoryDesc;

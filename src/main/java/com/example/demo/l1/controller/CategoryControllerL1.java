@@ -1,6 +1,6 @@
-package com.example.demo.controller;
+package com.example.demo.l1.controller;
 
-import com.example.demo.model.CategoryL1;
+import com.example.demo.l1.model.CategoryL1;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,19 +49,19 @@ public class CategoryControllerL1 {
    private List<CategoryL1> categories = new ArrayList<>();
 
    @GetMapping("/api/public/l1/getCategories")
-    public List<CategoryL1> getCategories(){
+   public List<CategoryL1> getCategories(){
        return categories;
    }
 
-   @GetMapping("/api/public/l1/getCategory/{id}")
-    public CategoryL1 getCategory(@PathVariable Long id){
-       for(CategoryL1 category: categories){
-           if(category.getCategoryId().equals(id)){
-               return category;
-           }
-       }
-       return null;
-   }
+    @GetMapping("/api/public/l1/getCategory/{id}")
+    public CategoryL1 getCategory(@PathVariable Long id) {
+        for (CategoryL1 category : categories) {
+            if (category.getCategoryId().equals(id)) {
+                return category;
+            }
+        }
+        return null;
+    }
 
    @PostMapping("/api/public/l1/addCategory")
     public String addCategory(@RequestBody CategoryL1 category){
@@ -115,16 +115,6 @@ public class CategoryControllerL1 {
                category -> category.getCategoryName().equals(name)).toList();
    }
 
-    @GetMapping("/api/public/l1/getCategoryNames")
-    public List<String> getCategoryNames() {
-       return categories.stream().map(category -> category.getCategoryName()).toList();
-    }
-
-    @GetMapping("/api/public/l1/countCategory/{name}")
-    public long countCategoriesByName(@PathVariable String name) {
-        return categories.stream()
-                .filter(category -> category.getCategoryName().equals(name))
-                .count();
-    }
+//   STEP 9 AND 10
 
 }

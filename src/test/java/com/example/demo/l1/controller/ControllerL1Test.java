@@ -1,6 +1,6 @@
-package com.example.demo.controller;
+package com.example.demo.l1.controller;
 
-import com.example.demo.model.CategoryL1;
+import com.example.demo.l1.model.CategoryL1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // STEP 7: Create a test to cover patchCategory endpoint
 // STEP 6: Create a test to cover deleteCategory endpoint
 
-@WebMvcTest
+@WebMvcTest(CategoryControllerL1.class)
 public class ControllerL1Test {
     @Autowired
     MockMvc mockMvc;
@@ -49,12 +49,11 @@ public class ControllerL1Test {
     }
 
     @Test
-    void getCategories_returnsCat_whenListPopulated() throws Exception {
+    void getCategories_returnCat_whenCategoriesPresent() throws Exception {
         mockMvc.perform(get("/api/public/l1/getCategories"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].categoryName").value("Travel"))
-                .andExpect(jsonPath("$[1].categoryName").value("Sport"));
+                .andExpect(jsonPath("$.length()").value("2"))
+                .andExpect(jsonPath("$[0].categoryName").value("Travel"));
     }
 
     @Test
@@ -170,27 +169,7 @@ public class ControllerL1Test {
                 .andExpect(jsonPath("$.length()").value(0));
     }
 
-    @Test
-    void getCategoryNames_returnsCategoryNames_whenCategoriesPresent() throws Exception {
-        mockMvc.perform(get("/api/public/l1/getCategoryNames"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0]").value("Travel"));
-    }
-
-    @Test
-    void countCategoriesByName_returnsCount_whenNameExists() throws Exception {
-        mockMvc.perform(get("/api/public/l1/countCategory/{name}", "Sport"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1"));
-    }
-
-    @Test
-    void countCategoriesByName_returnsZero_whenNameDoesNotExist() throws Exception {
-        mockMvc.perform(get("/api/public/l1/countCategory/{name}", "Music"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("0"));
-    }
+//    STEP 9 AND 10
 
     private String toJson(CategoryL1 category) throws Exception {
         return objectMapper.writeValueAsString(category);
