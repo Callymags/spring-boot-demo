@@ -29,5 +29,10 @@ public class CategoryControllerL2 {
         return categories.stream().filter(category -> category.getCategoryName().equals(name)).toList();
     }
 
-
+    @GetMapping("/api/public/l2/categoryNames")
+    public List<String> getCategoryNames() {
+        return categories.stream()
+                .map(CategoryL2::getCategoryName)
+                .toList();
+    }
 }

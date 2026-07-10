@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +42,34 @@ public class ControllerL2Test {
     void searchCategory_returnsList_whenValidNameProvided() throws Exception {
         mockMvc.perform(get("/api/public/l2/searchCategory/{name}", "Travel"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].categoryName").value("Travel"));
+                .andExpect(jsonPath("$[0].categoryId").value(1L));
     }
 
     @Test
-    void searchCategory_returnsBlankList_whenInvalidNameProvided() throws Exception {
+    void searchCategory_returnsEmptyList_whenInvalidNameProvided() throws Exception {
         mockMvc.perform(get("/api/public/l2/searchCategory/{name}", "Music"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void getCategoryNames_returnsAllCategoryNames() throws Exception {
+        mockMvc.perform(get("/api/public/l2/categoryNames"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0]").value("Travel"))
+                .andExpect(jsonPath("$[1]").value("Sport"));
+    }
+
+    @Test
+    void getCategoryNames_returnsEmptyList_whenNoCategoriesPresent() throws Exception {
+        ReflectionTestUtils.setField(
+                categoryControllerL2,
+                "categories",
+                new ArrayList<CategoryL2>()
+        );
+
+        mockMvc.perform(get("/api/public/l2/categoryNames"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }
