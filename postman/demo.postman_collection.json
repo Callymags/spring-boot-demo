@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "b4dd040d-6061-47cc-a4c0-754ee5dd1f58",
+    "_postman_id": "243eea78-a836-4a0d-b60e-be5a71d85214",
     "name": "demo",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "19468912"
+    "_exporter_id": "23712578",
+    "_collection_link": "https://go.postman.co/collection/23712578-243eea78-a836-4a0d-b60e-be5a71d85214?source=collection_link"
   },
   "item": [
     {
@@ -262,6 +263,51 @@
                 "public",
                 "l2",
                 "searchCategory",
+                "{nameHere}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCategoryNames",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l2/getCategoryNames",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l2",
+                "getCategoryNames"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "countCategoriesByName",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l2/countCategoriesByName/{nameHere}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l2",
+                "countCategoriesByName",
                 "{nameHere}"
               ]
             }

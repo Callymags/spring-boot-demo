@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CategoryControllerL2.class)
 public class ControllerL2Test {
@@ -34,43 +33,62 @@ public class ControllerL2Test {
 
         testCategories.add(new CategoryL2(1L, "Travel", "Test"));
         testCategories.add(new CategoryL2(2L, "Sport", "Test"));
+        testCategories.add(new CategoryL2(3L, "Travel", "Travel Other"));
 
         ReflectionTestUtils.setField(categoryControllerL2, "categories", testCategories);
     }
 
     @Test
-    void searchCategory_returnsList_whenValidNameProvided() throws Exception {
+    void searchCategory_returnsList_whenValidNameProvided() throws Exception{
         mockMvc.perform(get("/api/public/l2/searchCategory/{name}", "Travel"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].categoryId").value(1L));
-    }
-
-    @Test
-    void searchCategory_returnsEmptyList_whenInvalidNameProvided() throws Exception {
-        mockMvc.perform(get("/api/public/l2/searchCategory/{name}", "Music"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0));
-    }
-
-    @Test
-    void getCategoryNames_returnsAllCategoryNames() throws Exception {
-        mockMvc.perform(get("/api/public/l2/categoryNames"))
-                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0]").value("Travel"))
-                .andExpect(jsonPath("$[1]").value("Sport"));
+                .andExpect(jsonPath("$[0].categoryName").value("Travel"));
+    }
+
+    // TESTS TO COMPLETE
+
+    @Test
+    void searchCategory_returnsEmpty_whenInvalidNameProvided() throws Exception{
+        mockMvc.perform(get("/api/public/l2/searchCategory/{name}", "Test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 
     @Test
-    void getCategoryNames_returnsEmptyList_whenNoCategoriesPresent() throws Exception {
-        ReflectionTestUtils.setField(
-                categoryControllerL2,
-                "categories",
-                new ArrayList<CategoryL2>()
-        );
+    void getCategoryNames_returnsList_whenCatPresent() throws Exception {
+        mockMvc.perform(get("/api/public/l2/getCategoryNames"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3));
+    }
 
-        mockMvc.perform(get("/api/public/l2/categoryNames"))
+    @Test
+    void getCategoryNames_returnsEmptyList_whenCatNotPresent() throws Exception {
+        ReflectionTestUtils.setField(categoryControllerL2, "categories", new ArrayList<CategoryControllerL2>());
+
+        mockMvc.perform(get("/api/public/l2/getCategoryNames"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
+
+    }
+
+    @Test
+    void countCategoriesByName_returnsCorrectCount_whenNameExists() throws Exception {
+        mockMvc.perform(get(
+                        "/api/public/l2/countCategoriesByName/{name}",
+                        "Travel"
+                ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("2"));
+    }
+
+    @Test
+    void countCategoriesByName_returnsZero_whenNameDoesNotExist() throws Exception {
+        mockMvc.perform(get(
+                        "/api/public/l2/countCategoriesByName/{name}",
+                        "Music"
+                ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("0"));
     }
 }

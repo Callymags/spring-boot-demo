@@ -71,13 +71,12 @@ public class ControllerL1Test {
                 .andExpect(content().string(""));
     }
 
-
     @Test
     void addCategory_returnsString_whenValidCatAdded() throws Exception {
         CategoryL1 category = new CategoryL1(3L, "Food", "Test");
 
         mockMvc.perform(post("/api/public/l1/addCategory").contentType("application/json")
-                .content(toJson(category))).andExpect(status().isOk())
+                        .content(toJson(category))).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Category added")));
 
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 3L))
@@ -89,7 +88,7 @@ public class ControllerL1Test {
         CategoryL1 updatedCat = new CategoryL1(1L, "Activity", "Test Update");
 
         mockMvc.perform(put("/api/public/l1/updateCategory/{id}", 1L).contentType("application/json")
-                .content(toJson(updatedCat))).andExpect(status().isOk())
+                        .content(toJson(updatedCat))).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Category updated:")));
 
         mockMvc.perform(get("/api/public/l1/getCategory/{id}", 1L))
@@ -102,7 +101,7 @@ public class ControllerL1Test {
         CategoryL1 updatedCat = new CategoryL1(5L, "Activity", "Test");
 
         mockMvc.perform(put("/api/public/l1/updateCategory/{id}", 5L)
-                .contentType("application/json").content(toJson(updatedCat)))
+                        .contentType("application/json").content(toJson(updatedCat)))
                 .andExpect(status().isOk()).andExpect(content().string(containsString("")));
     }
 
@@ -168,8 +167,6 @@ public class ControllerL1Test {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }
-
-//    STEP 9 AND 10
 
     private String toJson(CategoryL1 category) throws Exception {
         return objectMapper.writeValueAsString(category);
