@@ -18,7 +18,7 @@ import java.util.List;
 public class CategoryControllerL2 {
     private List<CategoryL2> categories = new ArrayList<>(
             List.of(
-                    new CategoryL2(2L, "Travel", "Travel Desc"),
+                    new CategoryL2(1L, "Travel", "Travel Desc"),
                     new CategoryL2(2L, "Sport", "Sport Desc"),
                     new CategoryL2(3L, "Travel", "Travel Other")
             )
@@ -40,5 +40,11 @@ public class CategoryControllerL2 {
         return categories.stream()
                 .filter(category -> category.getCategoryName().equals(name))
                 .count();
+    }
+
+    @GetMapping("/api/public/l2/categoryExists/{id}")
+    public boolean categoryExists(@PathVariable Long id) {
+        return categories.stream()
+                .anyMatch(category -> category.getCategoryId().equals(id));
     }
 }

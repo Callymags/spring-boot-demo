@@ -297,7 +297,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/public/l2/countCategoriesByName/{nameHere}",
+              "raw": "http://localhost:8080/api/public/l2/countCategoriesByName/{name}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -308,7 +308,30 @@
                 "public",
                 "l2",
                 "countCategoriesByName",
-                "{nameHere}"
+                "{name}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "categoryExists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l2/categoryExists/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l2",
+                "categoryExists",
+                "{id}"
               ]
             }
           },

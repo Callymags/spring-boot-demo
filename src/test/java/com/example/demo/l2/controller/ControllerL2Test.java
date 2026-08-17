@@ -91,4 +91,24 @@ public class ControllerL2Test {
                 .andExpect(status().isOk())
                 .andExpect(content().string("0"));
     }
+
+    @Test
+    void categoryExists_returnsTrue_whenIdExists() throws Exception {
+        mockMvc.perform(get(
+                        "/api/public/l2/categoryExists/{id}",
+                        1L
+                ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+    }
+
+    @Test
+    void categoryExists_returnsFalse_whenIdDoesNotExist() throws Exception {
+        mockMvc.perform(get(
+                        "/api/public/l2/categoryExists/{id}",
+                        99L
+                ))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"));
+    }
 }
