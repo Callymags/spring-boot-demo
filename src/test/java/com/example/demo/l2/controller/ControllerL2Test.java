@@ -111,4 +111,19 @@ public class ControllerL2Test {
                 .andExpect(status().isOk())
                 .andExpect(content().string("false"));
     }
+
+    @Test
+    void getCategory_returnsCategory_whenValidIdProvided() throws Exception {
+        mockMvc.perform(get("/api/public/l2/getCategory/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryId").value(1L))
+                .andExpect(jsonPath("$.categoryName").value("Travel"));
+    }
+
+    @Test
+    void getCategory_returnsEmpty_whenInvalidIdProvided() throws Exception {
+        mockMvc.perform(get("/api/public/l2/getCategory/{id}", 99L))
+                .andExpect(status().isOk())
+                .andExpect(content().string("null"));
+    }
 }
