@@ -6,6 +6,7 @@ package com.example.demo.l2.controller;
 // STEP 4: Count categories by name using count
 // STEP 5: Return boolean if categoryId exists using anyMatch
 // STEP 6: Get category by id using findFirst
+// STEP 7: Sort categories by name
 
 import com.example.demo.l2.model.CategoryL2;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +57,12 @@ public class CategoryControllerL2 {
         return categories.stream()
                 .filter(category -> category.getCategoryId().equals(id))
                 .findFirst();
+    }
+
+    @GetMapping("/api/public/l2/getCategoriesSortedByName")
+    public List<CategoryL2> getCategoriesSortedByName() {
+        return categories.stream()
+                .sorted(Comparator.comparing(CategoryL2::getCategoryName))
+                .toList();
     }
 }

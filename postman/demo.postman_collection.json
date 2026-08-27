@@ -315,6 +315,28 @@
           "response": []
         },
         {
+          "name": "getCategoriesSortedByName",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l2/getCategoriesSortedByName",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l2",
+                "getCategoriesSortedByName"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "countCategoriesByName",
           "request": {
             "method": "GET",

@@ -126,4 +126,27 @@ public class ControllerL2Test {
                 .andExpect(status().isOk())
                 .andExpect(content().string("null"));
     }
+
+    @Test
+    void getCategoriesSortedByName_returnsCategoriesInAlphabeticalOrder() throws Exception {
+        mockMvc.perform(get("/api/public/l2/getCategoriesSortedByName"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3))
+                .andExpect(jsonPath("$[0].categoryName").value("Sport"))
+                .andExpect(jsonPath("$[1].categoryName").value("Travel"))
+                .andExpect(jsonPath("$[2].categoryName").value("Travel"));
+    }
+
+    @Test
+    void getCategoriesSortedByName_returnsEmptyList_whenNoCategoriesPresent() throws Exception {
+        ReflectionTestUtils.setField(
+                categoryControllerL2,
+                "categories",
+                new ArrayList<CategoryL2>()
+        );
+
+        mockMvc.perform(get("/api/public/l2/getCategoriesSortedByName"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
 }
