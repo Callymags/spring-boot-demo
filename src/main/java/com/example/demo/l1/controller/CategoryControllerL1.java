@@ -24,25 +24,6 @@ import java.util.List;
 // Uses: null checks and conditional updates
 
 // STEP 7: Create a DELETE endpoint to remove a category by id.
-// Uses: removeIf lambda
-
-// STEP 8: Create a GET endpoint to search categories by exact name.
-// Uses: stream(), filter(), toList()
-
-// STEP 9: Create a GET endpoint to return only category names.
-// Uses: stream(), map(), toList()
-
-// STEP 10: Create a GET endpoint to count categories by name.
-// Uses: stream(), filter(), count()
-
-// STEP 11: Refactor one existing endpoint to use stream(), findFirst(), orElse(null).
-// Suggestion: use this on getCategory later, after practising the for loop version.
-
-// STEP 12: Create a GET endpoint to check whether a category exists by id.
-// Uses: stream(), anyMatch()
-
-// STEP 13: Create a GET endpoint to return categories sorted by name.
-// Uses: stream(), sorted(), Comparator
 
 @RestController
 public class CategoryControllerL1 {
@@ -98,23 +79,14 @@ public class CategoryControllerL1 {
        return null;
    }
 
-   @DeleteMapping("/api/public/l1/deleteCategory/{id}")
-   public String deleteCategory(@PathVariable Long id){
-      boolean catRemoved = categories.removeIf(category -> category.getCategoryId().equals(id));
-
-      if(catRemoved){
-          return "Category removed";
-      } else {
-          return "Category not found";
-      }
-   }
-
-   @GetMapping("/api/public/l1/searchCategory/{name}")
-   public List<CategoryL1> searchCategory(@PathVariable String name){
-       return categories.stream().filter(
-               category -> category.getCategoryName().equals(name)).toList();
-   }
-
-//   STEP 9 AND 10
-
+    @DeleteMapping("/api/public/l1/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getCategoryId().equals(id)) {
+                CategoryL1 removedCategory = categories.remove(i);
+                return "Category deleted: " + removedCategory;
+            }
+        }
+        return null;
+    }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,8 +47,6 @@ public class ControllerL2Test {
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].categoryName").value("Travel"));
     }
-
-    // TESTS TO COMPLETE
 
     @Test
     void searchCategory_returnsEmpty_whenInvalidNameProvided() throws Exception{
@@ -148,5 +148,19 @@ public class ControllerL2Test {
         mockMvc.perform(get("/api/public/l2/getCategoriesSortedByName"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void deleteCategory_returnsString_whenValidIdProvided() throws Exception {
+        mockMvc.perform(delete("/api/public/l2/deleteCategory/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category removed")));
+    }
+
+    @Test
+    void deleteCategory_returnsString_whenInvalidIdProvided() throws Exception {
+        mockMvc.perform(delete("/api/public/l2/deleteCategory/{id}", 99L))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category not found")));
     }
 }

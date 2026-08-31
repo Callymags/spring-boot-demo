@@ -7,8 +7,10 @@ package com.example.demo.l2.controller;
 // STEP 5: Return boolean if categoryId exists using anyMatch
 // STEP 6: Get category by id using findFirst
 // STEP 7: Sort categories by name
+// STEP 8: Delete categories using removeIf
 
 import com.example.demo.l2.model.CategoryL2;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,5 +66,16 @@ public class CategoryControllerL2 {
         return categories.stream()
                 .sorted(Comparator.comparing(CategoryL2::getCategoryName))
                 .toList();
+    }
+
+    @DeleteMapping("/api/public/l2/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable Long id){
+        boolean catRemoved = categories.removeIf(category -> category.getCategoryId().equals(id));
+
+        if(catRemoved){
+            return "Category removed";
+        } else {
+            return "Category not found";
+        }
     }
 }

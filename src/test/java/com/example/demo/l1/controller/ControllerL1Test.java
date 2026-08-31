@@ -140,32 +140,19 @@ public class ControllerL1Test {
     }
 
     @Test
-    void deleteCategory_returnsString_whenValidIdProvided() throws Exception {
+    void deleteCategory_returnsDeletedCategory_whenValidIdProvided() throws Exception {
+
         mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Category removed")));
+                .andExpect(content().string(containsString("Category deleted:")));
     }
 
     @Test
-    void deleteCategory_returnsString_whenInvalidIdProvided() throws Exception {
+    void deleteCategory_returnsEmptyBody_whenInvalidIdProvided() throws Exception {
+
         mockMvc.perform(delete("/api/public/l1/deleteCategory/{id}", 99L))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Category not found")));
-    }
-
-    @Test
-    void searchCategory_returnsList_whenValidNameProvided() throws Exception {
-        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Travel"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].categoryName").value("Travel"));
-    }
-
-    @Test
-    void searchCategory_returnsBlank_whenInvalidNameProvided() throws Exception {
-        mockMvc.perform(get("/api/public/l1/searchCategory/{name}", "Test"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(content().string(""));
     }
 
     private String toJson(CategoryL1 category) throws Exception {
