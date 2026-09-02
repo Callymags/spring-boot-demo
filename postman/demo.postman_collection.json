@@ -383,6 +383,34 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Level3",
+      "item": [
+        {
+          "name": "getCategoryById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l3/getCategory/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l3",
+                "getCategory",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }

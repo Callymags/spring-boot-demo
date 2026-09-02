@@ -48,7 +48,7 @@ public class CategoryL2 {
 
     @Override
     public String toString(){
-        return "CategoryL1{" + "categoryId=" + categoryId + ", categoryName='" + categoryName +
+        return "CategoryL2{" + "categoryId=" + categoryId + ", categoryName='" + categoryName +
             '\'' + ", categoryDesc='" + categoryDesc + '\'' + '}';
     }
 }
