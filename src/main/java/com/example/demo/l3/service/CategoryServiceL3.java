@@ -6,7 +6,10 @@ import java.util.Optional;
 
 // STEP 1: Create CategoryServiceL3 interface
 // STEP 2: Define getCategoryById service method
+// STEP 3: Define addCategory service method
 
 public interface CategoryServiceL3 {
     Optional<CategoryL3> getCategoryById(Long id);
+
+    String addCategory(CategoryL3 category);
 }

@@ -47,4 +47,20 @@ public class CategoryServiceL3ImplTest {
         Optional<CategoryL3> result = categoryServiceL3.getCategoryById(99L);
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    void addCategory_addsCategoryToList() {
+
+        CategoryL3 newCategory = new CategoryL3(4L, "Music", "Music Desc");
+        String result = categoryServiceL3.addCategory(newCategory);
+
+        assertEquals("Category added: " + newCategory, result);
+
+        Optional<CategoryL3> addedCategory =
+                categoryServiceL3.getCategoryById(4L);
+
+        assertTrue(addedCategory.isPresent());
+        assertEquals("Music", addedCategory.get().getCategoryName());
+        assertEquals("Music Desc", addedCategory.get().getCategoryDesc());
+    }
 }

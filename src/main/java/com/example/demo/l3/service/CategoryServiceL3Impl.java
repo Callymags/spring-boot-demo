@@ -12,6 +12,7 @@ import java.util.Optional;
 // STEP 3: Create in-memory category list as fake data
 // STEP 4: Override getCategoryById
 // STEP 5: Use stream, filter, and findFirst to find category by id
+// STEP 5: Create addCategory method
 
 @Service
 public class CategoryServiceL3Impl implements CategoryServiceL3{
@@ -28,5 +29,11 @@ public class CategoryServiceL3Impl implements CategoryServiceL3{
         return categories.stream()
                 .filter(category -> category.getCategoryId().equals(id))
                 .findFirst();
+    }
+
+    @Override
+    public String addCategory(CategoryL3 category) {
+        categories.add(category);
+        return "Category added: " + category;
     }
 }

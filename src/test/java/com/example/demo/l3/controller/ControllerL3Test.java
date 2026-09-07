@@ -2,16 +2,21 @@ package com.example.demo.l3.controller;
 
 import com.example.demo.l3.model.CategoryL3;
 import com.example.demo.l3.service.CategoryServiceL3;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // STEP 1: Use @WebMvcTest to test CategoryControllerL3
@@ -25,6 +30,9 @@ public class ControllerL3Test {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockitoBean
     CategoryServiceL3 categoryServiceL3;
@@ -55,4 +63,22 @@ public class ControllerL3Test {
                 .andExpect(status().isOk())
                 .andExpect(content().string("null"));
     }
+
+    @Test
+    void addCategory_returnsConfirmation_whenValidCategoryProvided() throws Exception {
+
+        CategoryL3 category =
+                new CategoryL3(4L, "Music", "Music Desc");
+
+        when(categoryServiceL3.addCategory(any(CategoryL3.class)))
+                .thenReturn("Category added: " + category);
+
+        mockMvc.perform(post("/api/public/l3/addCategory")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(category)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Category added:")));
+    }
+
+
 }

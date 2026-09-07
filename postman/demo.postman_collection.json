@@ -409,6 +409,37 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"categoryId\": 4,\r\n    \"categoryName\": \"Music\",\r\n    \"categoryDesc\": \"Music Desc\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/public/l3/addCategory",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l3",
+                "addCategory"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     }
