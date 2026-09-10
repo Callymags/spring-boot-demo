@@ -411,7 +411,7 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "addCategory",
           "request": {
             "method": "POST",
             "header": [],
@@ -436,6 +436,38 @@
                 "public",
                 "l3",
                 "addCategory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateCategory",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"categoryName\": \"Test\",\r\n    \"categoryDesc\": \"Test Desc\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/public/l3/updateCategory/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l3",
+                "updateCategory",
+                "{id}"
               ]
             }
           },

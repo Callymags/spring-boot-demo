@@ -50,17 +50,33 @@ public class CategoryServiceL3ImplTest {
 
     @Test
     void addCategory_addsCategoryToList() {
-
         CategoryL3 newCategory = new CategoryL3(4L, "Music", "Music Desc");
         String result = categoryServiceL3.addCategory(newCategory);
 
         assertEquals("Category added: " + newCategory, result);
-
-        Optional<CategoryL3> addedCategory =
-                categoryServiceL3.getCategoryById(4L);
+        Optional<CategoryL3> addedCategory = categoryServiceL3.getCategoryById(4L);
 
         assertTrue(addedCategory.isPresent());
         assertEquals("Music", addedCategory.get().getCategoryName());
         assertEquals("Music Desc", addedCategory.get().getCategoryDesc());
+    }
+
+    @Test
+    void updateCategory_updatesCategory_whenIdExists() {
+        CategoryL3 updatedCategory = new CategoryL3(2L, "Football", "Football Desc");
+        CategoryL3 result = categoryServiceL3.updateCategory(2L, updatedCategory);
+
+        assertNotNull(result);
+        assertEquals(2L, result.getCategoryId());
+        assertEquals("Football", result.getCategoryName());
+        assertEquals("Football Desc", result.getCategoryDesc());
+    }
+
+    @Test
+    void updateCategory_returnsNull_whenIdDoesNotExist() {
+        CategoryL3 updatedCategory = new CategoryL3(99L, "Football", "Football Desc");
+        CategoryL3 result = categoryServiceL3.updateCategory(99L, updatedCategory);
+
+        assertNull(result);
     }
 }

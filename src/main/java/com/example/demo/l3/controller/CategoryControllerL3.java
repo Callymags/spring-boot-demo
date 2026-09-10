@@ -10,6 +10,7 @@ import java.util.Optional;
 // STEP 2: Inject CategoryServiceL3 using constructor injection
 // STEP 3: Create GET endpoint to get category by id with logic in service layer
 // STEP 4: Create POST endpoint to add category
+// STEP 5: Create PUT endpoint to update category
 
 @RestController
 public class CategoryControllerL3 {
@@ -28,5 +29,10 @@ public class CategoryControllerL3 {
     @PostMapping("/api/public/l3/addCategory")
     public String addCategory(@RequestBody CategoryL3 category) {
         return categoryServiceL3.addCategory(category);
+    }
+
+    @PutMapping("/api/public/l3/updateCategory/{id}")
+    public CategoryL3 updateCategory(@PathVariable Long id, @RequestBody CategoryL3 updatedCategory) {
+        return categoryServiceL3.updateCategory(id, updatedCategory);
     }
 }

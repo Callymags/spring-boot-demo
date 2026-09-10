@@ -13,6 +13,7 @@ import java.util.Optional;
 // STEP 4: Override getCategoryById
 // STEP 5: Use stream, filter, and findFirst to find category by id
 // STEP 5: Create addCategory method
+// STEP 6: Create updateCategory method
 
 @Service
 public class CategoryServiceL3Impl implements CategoryServiceL3{
@@ -36,4 +37,19 @@ public class CategoryServiceL3Impl implements CategoryServiceL3{
         categories.add(category);
         return "Category added: " + category;
     }
+
+    @Override
+    public CategoryL3 updateCategory(Long id, CategoryL3 updatedCategory) {
+        for (CategoryL3 category : categories) {
+            if (category.getCategoryId().equals(id)) {
+                category.setCategoryName(updatedCategory.getCategoryName());
+                category.setCategoryDesc(updatedCategory.getCategoryDesc());
+
+                return category;
+            }
+        }
+        return null;
+    }
+
+
 }

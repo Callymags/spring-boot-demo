@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.util.Optional;
 
@@ -78,6 +80,20 @@ public class ControllerL3Test {
                         .content(objectMapper.writeValueAsString(category)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Category added:")));
+    }
+
+    @Test
+    void updateCategory_returnsUpdatedCategory_whenValidIdProvided() throws Exception {
+        CategoryL3 updatedCategory = new CategoryL3(2L, "Football", "Football Desc");
+        when(categoryServiceL3.updateCategory(eq(2L), any(CategoryL3.class))).thenReturn(updatedCategory);
+
+        mockMvc.perform(put("/api/public/l3/updateCategory/{id}", 2L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedCategory)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryId").value(2L))
+                .andExpect(jsonPath("$.categoryName").value("Football"))
+                .andExpect(jsonPath("$.categoryDesc").value("Football Desc"));
     }
 
 
