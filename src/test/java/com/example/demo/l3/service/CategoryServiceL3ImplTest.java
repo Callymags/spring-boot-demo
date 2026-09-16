@@ -79,4 +79,24 @@ public class CategoryServiceL3ImplTest {
 
         assertNull(result);
     }
+
+    @Test
+    void patchCategory_updatesName_whenNameProvided() {
+        CategoryL3 patchedCategory = new CategoryL3(null, "Test", null);
+        CategoryL3 result = categoryServiceL3.patchCategory(2L, patchedCategory);
+
+        assertNotNull(result);
+        assertEquals("Test", result.getCategoryName());
+        assertEquals("Sport Desc", result.getCategoryDesc());
+    }
+
+    @Test
+    void patchCategory_updatesDescription_whenDescriptionProvided() {
+        CategoryL3 patchedCategory = new CategoryL3(null, null, "Updated Sport Desc");
+        CategoryL3 result = categoryServiceL3.patchCategory(2L, patchedCategory);
+
+        assertNotNull(result);
+        assertEquals("Sport", result.getCategoryName());
+        assertEquals("Updated Sport Desc", result.getCategoryDesc());
+    }
 }

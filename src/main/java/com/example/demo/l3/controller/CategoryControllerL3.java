@@ -11,6 +11,7 @@ import java.util.Optional;
 // STEP 3: Create GET endpoint to get category by id with logic in service layer
 // STEP 4: Create POST endpoint to add category
 // STEP 5: Create PUT endpoint to update category
+// STEP 6: Create PATCH endpoint to update category
 
 @RestController
 public class CategoryControllerL3 {
@@ -34,5 +35,10 @@ public class CategoryControllerL3 {
     @PutMapping("/api/public/l3/updateCategory/{id}")
     public CategoryL3 updateCategory(@PathVariable Long id, @RequestBody CategoryL3 updatedCategory) {
         return categoryServiceL3.updateCategory(id, updatedCategory);
+    }
+
+    @PatchMapping("/api/public/l3/patchCategory/{id}")
+    public CategoryL3 patchCategory(@PathVariable Long id, @RequestBody CategoryL3 patchedCategory) {
+        return categoryServiceL3.patchCategory(id, patchedCategory);
     }
 }

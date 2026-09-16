@@ -51,5 +51,20 @@ public class CategoryServiceL3Impl implements CategoryServiceL3{
         return null;
     }
 
+    @Override
+    public CategoryL3 patchCategory(Long id, CategoryL3 patchedCategory) {
+        for (CategoryL3 category : categories) {
+            if (category.getCategoryId().equals(id)) {
+                if (patchedCategory.getCategoryName() != null) {
+                    category.setCategoryName(patchedCategory.getCategoryName());
+                }
 
+                if (patchedCategory.getCategoryDesc() != null) {
+                    category.setCategoryDesc(patchedCategory.getCategoryDesc());
+                }
+                return category;
+            }
+        }
+        return null;
+    }
 }

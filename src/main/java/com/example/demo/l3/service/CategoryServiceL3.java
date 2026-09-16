@@ -15,4 +15,6 @@ public interface CategoryServiceL3 {
     String addCategory(CategoryL3 category);
 
     CategoryL3 updateCategory(Long id, CategoryL3 updatedCategory);
+
+    CategoryL3 patchCategory(Long id, CategoryL3 patchedCategory);
 }

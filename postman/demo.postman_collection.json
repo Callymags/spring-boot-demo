@@ -472,6 +472,38 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "patchCategory",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"categoryName\": \"Test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/public/l3/patchCategory/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l3",
+                "patchCategory",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     }

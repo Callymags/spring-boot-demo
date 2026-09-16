@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // STEP 1: Use @WebMvcTest to test CategoryControllerL3
@@ -96,5 +97,18 @@ public class ControllerL3Test {
                 .andExpect(jsonPath("$.categoryDesc").value("Football Desc"));
     }
 
+    @Test
+    void patchCategory_returnsPatchedCategory_whenValidIdProvided() throws Exception {
+        CategoryL3 patchedCategory = new CategoryL3(null, "Test", null);
+        CategoryL3 returnedCategory = new CategoryL3(2L, "Test", "Sport Desc");
 
+        when(categoryServiceL3.patchCategory(eq(2L), any(CategoryL3.class))).thenReturn(returnedCategory);
+        mockMvc.perform(patch("/api/public/l3/patchCategory/{id}", 2L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(patchedCategory)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryId").value(2L))
+                .andExpect(jsonPath("$.categoryName").value("Test"))
+                .andExpect(jsonPath("$.categoryDesc").value("Sport Desc"));
+    }
 }
