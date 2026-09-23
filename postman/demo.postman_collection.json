@@ -411,6 +411,29 @@
           "response": []
         },
         {
+          "name": "deleteCategory",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l3/deleteCategory/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l3",
+                "deleteCategory",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "addCategory",
           "request": {
             "method": "POST",

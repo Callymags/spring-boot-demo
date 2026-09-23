@@ -12,6 +12,8 @@ import java.util.Optional;
 // STEP 4: Create POST endpoint to add category
 // STEP 5: Create PUT endpoint to update category
 // STEP 6: Create PATCH endpoint to update category
+// STEP 7: Create DELETE endpoint to delete category
+
 
 @RestController
 public class CategoryControllerL3 {
@@ -41,4 +43,10 @@ public class CategoryControllerL3 {
     public CategoryL3 patchCategory(@PathVariable Long id, @RequestBody CategoryL3 patchedCategory) {
         return categoryServiceL3.patchCategory(id, patchedCategory);
     }
+
+    @DeleteMapping("/api/public/l3/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        return categoryServiceL3.deleteCategory(id);
+    }
+
 }

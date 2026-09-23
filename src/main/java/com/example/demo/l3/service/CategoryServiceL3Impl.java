@@ -67,4 +67,14 @@ public class CategoryServiceL3Impl implements CategoryServiceL3{
         }
         return null;
     }
+
+    @Override
+    public String deleteCategory(Long id) {
+        boolean catRemoved = categories.removeIf(category -> category.getCategoryId().equals(id));
+        if (catRemoved) {
+            return "Category removed";
+        } else {
+            return "Category not found";
+        }
+    }
 }

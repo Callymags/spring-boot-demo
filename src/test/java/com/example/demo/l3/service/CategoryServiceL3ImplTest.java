@@ -99,4 +99,19 @@ public class CategoryServiceL3ImplTest {
         assertEquals("Sport", result.getCategoryName());
         assertEquals("Updated Sport Desc", result.getCategoryDesc());
     }
+
+    @Test
+    void deleteCategory_removesCategory_whenIdExists() {
+        String result = categoryServiceL3.deleteCategory(1L);
+        assertEquals("Category removed", result);
+
+        Optional<CategoryL3> deletedCategory = categoryServiceL3.getCategoryById(1L);
+        assertTrue(deletedCategory.isEmpty());
+    }
+
+    @Test
+    void deleteCategory_returnsNotFound_whenIdDoesNotExist() {
+        String result = categoryServiceL3.deleteCategory(99L);
+        assertEquals("Category not found", result);
+    }
 }

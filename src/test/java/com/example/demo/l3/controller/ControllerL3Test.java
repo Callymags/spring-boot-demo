@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.util.Optional;
 
@@ -19,7 +18,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // STEP 1: Use @WebMvcTest to test CategoryControllerL3
@@ -110,5 +111,25 @@ public class ControllerL3Test {
                 .andExpect(jsonPath("$.categoryId").value(2L))
                 .andExpect(jsonPath("$.categoryName").value("Test"))
                 .andExpect(jsonPath("$.categoryDesc").value("Sport Desc"));
+    }
+
+
+    @Test
+    void deleteCategory_returnsRemoved_whenValidIdProvided() throws Exception {
+        when(categoryServiceL3.deleteCategory(1L)).thenReturn("Category removed");
+
+        mockMvc.perform(delete("/api/public/l3/deleteCategory/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Category removed"));
+    }
+
+    @Test
+    void deleteCategory_returnsNotFound_whenInvalidIdProvided() throws Exception {
+        when(categoryServiceL3.deleteCategory(99L))
+                .thenReturn("Category not found");
+
+        mockMvc.perform(delete("/api/public/l3/deleteCategory/{id}", 99L))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Category not found"));
     }
 }
