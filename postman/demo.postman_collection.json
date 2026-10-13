@@ -529,6 +529,34 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Level4",
+      "item": [
+        {
+          "name": "getCategoryById Copy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/public/l4/getCategory/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "public",
+                "l4",
+                "getCategory",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }

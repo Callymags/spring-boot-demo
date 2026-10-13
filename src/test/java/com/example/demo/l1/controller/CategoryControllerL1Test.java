@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // STEP 6: Create a test to cover deleteCategory endpoint
 
 @WebMvcTest(CategoryControllerL1.class)
-public class ControllerL1Test {
+public class CategoryControllerL1Test {
     @Autowired
     MockMvc mockMvc;
 

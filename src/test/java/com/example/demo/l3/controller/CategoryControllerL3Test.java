@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // STEP 5: Test getCategory endpoint with an invalid id
 
 @WebMvcTest(CategoryControllerL3.class)
-public class ControllerL3Test {
+public class CategoryControllerL3Test {
 
     @Autowired
     MockMvc mockMvc;
