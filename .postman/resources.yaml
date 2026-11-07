@@ -1,0 +1,13 @@
+workspace:
+  id: 190669ca-a147-4cd4-8c7c-c382e47ac80d
+cloudResources:
+  collections:
+    ../postman/collections/demo: 19468912-b036f962-5db2-4bae-96c9-058edfd460fb
+    ../postman/collections/unilingo-api: 19468912-10f95973-559c-40a9-9e6e-ebfa13b19106
+    ../postman/collections/Emails: 19468912-5a8e124e-babd-4e36-9505-563ce1be23ab
+    ../postman/collections/Cle-Endpoints: 19468912-df419feb-e355-41c8-adf3-a521ca4be7b3
+    ../postman/collections/BucketList-Experiences: 19468912-9bd96ea0-ad23-4e1b-b82e-a60bc6a37252
+  environments:
+    ../postman/environments/Docker.environment.yaml: 19468912-4f0f697c-eeda-4a3b-a982-92652b2f419d
+    ../postman/environments/Bucket List Local.environment.yaml: 19468912-7799ec93-52d8-4f73-a299-1d4a991f9459
+    ../postman/environments/Bucket List Production.environment.yaml: 19468912-bf8c337f-3fc2-452c-8486-df8f9e816957

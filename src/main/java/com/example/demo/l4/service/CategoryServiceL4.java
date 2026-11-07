@@ -5,9 +5,12 @@ package com.example.demo.l4.service;
 
 import com.example.demo.l4.model.CategoryL4;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryServiceL4 {
 
     Optional<CategoryL4> getCategoryById(Long id);
+
+    List<CategoryL4> getAllCategories();
 }
